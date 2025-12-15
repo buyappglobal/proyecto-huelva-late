@@ -3,7 +3,7 @@ const path = require('path');
 
 // Definición de los archivos y su contenido
 const files = {
-    'src/lib/mongodb.ts': `
+  'src/lib/mongodb.ts': `
 import mongoose from 'mongoose';
 
 const MONGODB_URI = process.env.MONGODB_URI;
@@ -48,7 +48,7 @@ async function dbConnect() {
 export default dbConnect;
 `,
 
-    'src/lib/locations.ts': `
+  'src/lib/locations.ts': `
 // Diccionario para mapear pueblos a coordenadas (ya que la DB no tiene lat/lng)
 export const SIERRA_COORDS: Record<string, { lat: number; lng: number }> = {
   'Linares de la Sierra': { lat: 37.8805, lng: -6.6219 },
@@ -69,7 +69,7 @@ export const getCoords = (pueblo: string) => {
 };
 `,
 
-    'src/lib/models/Event.ts': `
+  'src/lib/models/Event.ts': `
 import mongoose, { Schema, Model, Document } from 'mongoose';
 
 export interface IEvent extends Document {
@@ -104,7 +104,7 @@ const Event: Model<IEvent> = mongoose.models.Event || mongoose.model<IEvent>('Ev
 export default Event;
 `,
 
-    'src/components/MapComponent.tsx': `
+  'src/components/MapComponent.tsx': `
 'use client';
 
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
@@ -157,7 +157,7 @@ const MapComponent = ({ events }: MapProps) => {
 export default MapComponent;
 `,
 
-    'src/app/page.tsx': `
+  'src/app/page.tsx': `
 import dynamic from 'next/dynamic';
 import dbConnect from '@/lib/mongodb';
 import Event, { IEvent } from '@/lib/models/Event';
@@ -223,21 +223,22 @@ export default async function Home() {
   );
 }
 `,
-    '.env.local': `MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/nombre_db?retryWrites=true&w=majority`
+  '.env.local': `MONGODB_URI=mongodb+srv://usuario:password@cluster.mongodb.net/nombre_db?retryWrites=true&w=majority`
 };
 
 // Función para crear archivos
 Object.entries(files).forEach(([filePath, content]) => {
-    const fullPath = path.join(__dirname, filePath);
-    const dir = path.dirname(fullPath);
+  const fullPath = path.join(__dirname, filePath);
+  const dir = path.dirname(fullPath);
 
-    if (!fs.existsSync(dir)) {
-        fs.mkdirSync(dir, { recursive: true });
-        console.log(`📂 Carpeta creada: ${dir}`);
-    }
+  if (!fs.existsSync(dir)) {
+    fs.mkdirSync(dir, { recursive: true });
+    console.log(`📂 Carpeta creada: ${dir}`);
+  }
 
-    fs.writeFileSync(fullPath, content.trim());
-    console.log(`✅ Archivo creado: ${filePath}`);
+  fs.writeFileSync(fullPath, content.trim());
+  console.log(`✅ Archivo creado: ${filePath}`);
 });
 
 console.log('\n🚀 ¡Todo listo! No olvides configurar tu .env.local con tu conexión real.');
+
