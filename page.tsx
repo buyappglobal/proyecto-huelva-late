@@ -1,20 +1,20 @@
-import dbConnect from './src/lib/mongodb';
-import Event, { IEvent } from './src/lib/models/Event';
+import dbConnect from '@/lib/mongodb';
+import Event, { IEvent } from '@/lib/models/Event';
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import { Calendar, MapPin, ArrowLeft, ExternalLink } from 'lucide-react';
+import { Calendar, MapPin, ArrowLeft } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 
-// Mapa dinámico solo para esta página
-const MapComponent = dynamic(() => import('./src/components/MapComponent'), {
+// Mapa dinámico con importación absoluta usando @
+const MapComponent = dynamic(() => import('@/components/MapComponent'), {
     ssr: false,
     loading: () => <div className="h-[400px] bg-zinc-100 animate-pulse rounded-xl" />,
 });
 
 async function getEvent(id: string) {
     await dbConnect();
-    // Buscamos por tu campo 'ID' personalizado, no por el _id de Mongo
+    // Buscamos por tu campo 'ID' personalizado
     const event = await Event.findOne({ ID: id }).lean();
     if (!event) return null;
     return JSON.parse(JSON.stringify(event));
