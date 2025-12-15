@@ -1,5 +1,5 @@
-import dbConnect from '@/lib/mongodb';
-import Event, { IEvent } from '@/lib/models/Event';
+import dbConnect from './src/lib/mongodb';
+import Event, { IEvent } from './src/lib/models/Event';
 import { notFound } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import { Calendar, MapPin, ArrowLeft, ExternalLink } from 'lucide-react';
@@ -7,7 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 
 // Mapa dinámico solo para esta página
-const MapComponent = dynamic(() => import('@/components/MapComponent'), {
+const MapComponent = dynamic(() => import('./src/components/MapComponent'), {
     ssr: false,
     loading: () => <div className="h-[400px] bg-zinc-100 animate-pulse rounded-xl" />,
 });
@@ -20,9 +20,8 @@ async function getEvent(id: string) {
     return JSON.parse(JSON.stringify(event));
 }
 
-export default async function EventPage({ params }: { params: Promise<{ id: string }> }) {
-    // En Next.js 15, params es una promesa que hay que esperar
-    const { id } = await params;
+export default async function EventPage({ params }: { params: { id: string } }) {
+    const { id } = params;
     const event = (await getEvent(id)) as IEvent | null;
 
     if (!event) {

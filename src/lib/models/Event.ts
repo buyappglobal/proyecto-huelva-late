@@ -1,32 +1,31 @@
-import mongoose, { Schema, Model, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface IEvent extends Document {
   ID: string;
+  'URL Imagen': string;
   'Título': string;
-  'Pueblo': string;
-  'Fecha Inicio': string;
-  'Fecha Fin'?: string;
   'Categoría': string;
   'Destacado': string;
-  'URL Imagen': string;
+  'Fecha Inicio': string;
+  'Pueblo': string;
   'Descripción': string;
-  _id: mongoose.Types.ObjectId;
+  Latitud?: number;
+  Longitud?: number;
 }
 
-const EventSchema = new Schema<IEvent>(
-  {
-    ID: { type: String, required: true, unique: true },
-    'Título': { type: String, required: true },
-    'Pueblo': { type: String, required: true },
-    'Fecha Inicio': { type: String, required: true },
-    'Fecha Fin': { type: String },
-    'Categoría': { type: String },
-    'Destacado': { type: String },
-    'URL Imagen': { type: String },
-    'Descripción': { type: String },
-  },
-  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } }
-);
+const EventSchema: Schema = new Schema({
+  ID: { type: String, required: true, unique: true },
+  'URL Imagen': { type: String },
+  'Título': { type: String, required: true },
+  'Categoría': { type: String },
+  'Destacado': { type: String },
+  'Fecha Inicio': { type: String },
+  'Pueblo': { type: String },
+  'Descripción': { type: String },
+  Latitud: { type: Number },
+  Longitud: { type: Number },
+}, { collection: 'events' });
 
 const Event: Model<IEvent> = mongoose.models.Event || mongoose.model<IEvent>('Event', EventSchema);
+
 export default Event;
